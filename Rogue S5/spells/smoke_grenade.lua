@@ -192,7 +192,7 @@ local function logics(entity_list, target_selector_data, best_target)
 
     if cast_spell.position(spell_id_smoke_grenade, cast_position, 0.4)then
         local current_time = get_time_since_inject();
-        next_time_allowed_cast = current_time + 3.0;
+        next_time_allowed_cast = current_time + 5.0;
             
         global_poison_trap_last_cast_time = current_time
         global_poison_trap_last_cast_position = cast_position
