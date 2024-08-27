@@ -416,7 +416,7 @@ on_update(function ()
     end;
 
     if spells.rapid_fire.logics(best_target)then
-        cast_end_time = current_time + 0.4;
+        cast_end_time = current_time + 0.2;
         return;
     end;
 
