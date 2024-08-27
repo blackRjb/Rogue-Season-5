@@ -27,9 +27,8 @@ local spell_data_barrage = spell_data:new(
     spell_geometry.rectangular, -- geometry_type
     targeting_type.skillshot    --targeting_type
 )
-local next_time_allowed_cast = 0.0;
+local next_time_allowed_cast = 0.1;
 local function logics(target)
-    
     local menu_boolean = menu_elements_barrage_base.main_boolean:get();
     local is_logic_allowed = my_utility.is_spell_allowed(
                 menu_boolean, 
@@ -41,14 +40,18 @@ local function logics(target)
     end;
 
     local player_local = get_local_player();
-    
     local player_position = get_player_position();
     local target_position = target:get_position();
 
-    if cast_spell.target(target, spell_data_barrage, false) then
+    
+    local distance_to_target = player_position:dist_to(target_position)
+    if distance_to_target > spell_data_barrage.range then
+        return false;
+    end
 
+    if cast_spell.target(target, spell_data_barrage, false) then
         local current_time = get_time_since_inject();
-        next_time_allowed_cast = current_time + 0.9;
+        next_time_allowed_cast = current_time + 0.1;
 
         console.print("Rouge, Casted Barrage");
         return true;

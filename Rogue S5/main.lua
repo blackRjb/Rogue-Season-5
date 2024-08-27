@@ -1,13 +1,19 @@
 local local_player = get_local_player()
+
 if local_player == nil then
     return
 end
+
 local menu_elements_bone = require("menu")
+
 local character_id = local_player:get_character_class_id();
+
 local is_rouge = character_id == 3;
+
 if not is_rouge then
  return
 end;
+
 
 
 local spells =
@@ -37,8 +43,14 @@ local spells =
     rain_of_arrows          = require("spells/rain_of_arrows"),
 }
 
+
+
+
 local menu_elements_bone = require("menu")
 local menu = require("menu")
+
+
+
 
 on_render_menu(function()
     if not menu_elements_bone.main_tree:push("Rogue: Season 5") then
@@ -52,9 +64,9 @@ on_render_menu(function()
         return
     end
 
-
-    local options = {"Melee", "Ranged"}
-    menu.mode:render("Mode", options, "")
+    -- Updated Options for Mode
+    local options = {"Melee", "Ranged", "Hybrid"} 
+    menu.mode:render("Mode", options, "") 
 
     menu_elements_bone.dash_cooldown:render("Dash Cooldown", "")
 
@@ -131,6 +143,7 @@ on_render_menu(function()
         spells.rain_of_arrows.menu()
     end
     menu_elements_bone.main_tree:pop()
+
 end)
 
 
@@ -193,13 +206,12 @@ local my_utility = require("my_utility/my_utility");
 local my_target_selector = require("my_utility/my_target_selector");
 
 local last_heartseeker_cast_time = 0
-
 local glow_target = nil
 local last_dash_cast_time = 0.0
 global_poison_trap_last_cast_time = 0.0
 global_poison_trap_last_cast_position = nil
-on_update(function ()
 
+on_update(function ()
     local local_player = get_local_player();
     if not local_player then
         return;
@@ -246,17 +258,28 @@ on_update(function ()
 
     -- local hearts = get_helltide_coin_hearts()
     -- console.print("hearts " .. hearts)
+
+
     local is_auto_play_active = auto_play.is_active();
-    local max_range = 26.0;
+    local max_range = 26.0; -- Default to ranged
     local mode_id = menu.mode:get()
-    if mode_id <= 0 then -- is melee
-        max_range = 7.0;
-    end
-    local is_ranged =  mode_id >= 1
 
+    -- HYBRID MODE LOGIC
+    if mode_id == 3 then -- Hybrid
+        local isBarrageReady = utility.is_spell_ready(439762) 
+        local isMeleeReady = utility.is_spell_ready(398258) -- Example: flurry
 
-    if is_auto_play_active then
-        max_range = 12.0;
+        if isBarrageReady and distance_sqr > (7.0 * 7.0) then
+            max_range = 26.0 -- Ranged Barrage
+        elseif (isBarrageReady or isMeleeReady) and distance_sqr <= (7.0 * 7.0) then
+            max_range = 7.0 -- Melee Barrage or other melee
+        else 
+            max_range = 15.0 -- Adjust as needed, maybe prioritize kiting
+        end
+    elseif mode_id == 1 then -- Melee
+        max_range = 7.0
+    elseif mode_id == 2 then -- Ranged
+        max_range = 26.0
     end
 
     local best_target = my_target_selector.get_best_weighted_target(entity_list)
