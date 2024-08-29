@@ -4,6 +4,7 @@ local menu_elements_shadow_step_base =
 {
     tree_tab            = tree_node:new(1),
     main_boolean        = checkbox:new(true, get_hash(my_utility.plugin_label .. "shadow_step_base_bool_main")),
+    cast_delay_slider   = slider_float:new(1, 5, 1, get_hash(my_utility.plugin_label .. "shadow_step_cast_delay")),
     spell_range         = slider_float:new(1.0, 8.50, 7.50, get_hash(my_utility.plugin_label .. "shadow_step_range")),
 
     cast_mode         = combo_box:new(0, get_hash(my_utility.plugin_label .. "shadow_stepbase_cast_mode_base_pos")),
@@ -30,6 +31,7 @@ local function menu()
     
     if menu_elements_shadow_step_base.tree_tab:push("Shadow Step")then
         menu_elements_shadow_step_base.main_boolean:render("Enable Spell", "")
+        menu_elements_shadow_step_base.cast_delay_slider:render("Cast Delay", "Adjust the delay between casts (seconds)",1)
         menu_elements_shadow_step_base.spell_range:render("Spell Range", "", 1)
 
         local options =  {"Area", "Space"};
@@ -203,6 +205,8 @@ end
 local function logics(entity_list, target_selector_data, best_target, closest_target)
     
     local menu_boolean = menu_elements_shadow_step_base.main_boolean:get();
+    local cast_delay = menu_elements_shadow_step_base.cast_delay_slider:get();
+
     local is_logic_allowed = my_utility.is_spell_allowed(
                 menu_boolean, 
                 next_time_allowed_cast, 
@@ -276,9 +280,9 @@ local function logics(entity_list, target_selector_data, best_target, closest_ta
     if cast_spell.target(target, spell_data_shadow_step, false) then
 
         local current_time = get_time_since_inject();
-        next_time_allowed_cast = current_time + 4.0;
+        next_time_allowed_cast = current_time + cast_delay;
 
-        console.print("Rouge, Casted Shadow Step");
+        console.print("Rouge, Casted Shadow Step with " .. string.format("%.2f", cast_delay) .. "s delay");
         return true;
     end;
             

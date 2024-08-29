@@ -607,4 +607,4 @@ on_render(function ()
 
 end);
 
-console.print("Lua Plugin - Rouge Base - Version 1.5");
+console.print("Lua Plugin - Rogue Testing  - Version 2.0");
