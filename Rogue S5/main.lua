@@ -1,4 +1,4 @@
-local local_player = get_local_player()
+  local local_player = get_local_player()
 
 if local_player == nil then
     return
