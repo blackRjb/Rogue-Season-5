@@ -17,4 +17,6 @@
 
 #new logic method on target selector for the totem umbracrux
 
-ToDo : rework shadow clone ulti for better logic // add more slide_bar delay for other spell // keep working on Hybrid logic for other spe than barrage 
+#Hybrid logic updated, should now work for all abilities
+
+-->ToDo : rework shadow clone ulti for better logic // add more slide_bar delay for other spell 
