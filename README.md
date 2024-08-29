@@ -12,3 +12,9 @@
 #I tweaked with the target selector but at the end with hybrid mode target selector looks "ok" atm ( tryed mainly in horde) 
 
 #im new at coding so dont judge this basic work <3
+
+#added slide bar cast_delay on few spell 
+
+#new logic method on target selector for the totem umbracrux
+
+ToDo : rework shadow clone ulti for better logic // add more slide_bar delay for other spell // keep working on Hybrid logic for other spe than barrage 
