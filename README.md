@@ -1,22 +1,18 @@
 # Rogue-Season-5
-#remodeling of interface 
 
-#Added 2 " predefined Build" most used so once selected you only see the usual spell dedicated to this build 
+#remodeled interface ( Added builds selection to clean a bit the menu)
 
-#if "others build" is selected you will just see every single spell available for rogue ^^
+#Added Hybrid Mode to smooth the combat and give it more fluidity (Updated: should work fine with every abilities now, waiting for feedback to)
+Hybrid mode = will now automaticaly use any main abilities in fonction of his own adapted rang and not be rang or melee, that made it more fluid and avoid completely the going back and forth all time, using melee abilities will make him go at rang to use that abilities but if your close rang with a long rang abilities it will use it regardlessly if conditions are up obviously.
 
-#Added a new Hybrid mode to combat (now you get Melee, distance and hybrid), atm hybrid is coded for barrage since i play it mainly so i didnt added other spell over it so idk if the logic will still work out of barrage as main ability's test and see? :D
+#Edited few spell, added to slide bar to few of them to adjust the speed cast_delay.
+Smoke grenade and Shadow step got a diffrent scale slide bar to give more space to custom his use in the rotation combo.
 
-#If you have an idea to implement feel free to ask
+#Tweaked the target selector to add a new logic arround totem from umbracrux.
 
-#I tweaked with the target selector but at the end with hybrid mode target selector looks "ok" atm ( tryed mainly in horde) 
+Todo list : Try to rework the shadowclone logic to dont spam it randomly against low tier enemy.
+waiting for more idea/work to do from feedback.
 
-#im new at coding so dont judge this basic work <3
 
-#added slide bar cast_delay on few spell 
 
-#new logic method on target selector for the totem umbracrux
 
-#Hybrid logic updated, should now work for all abilities
-
--->ToDo : rework shadow clone ulti for better logic // add more slide_bar delay for other spell 
