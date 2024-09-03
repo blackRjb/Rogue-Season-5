@@ -47,8 +47,6 @@ local function logics(target)
 
         local current_time = get_time_since_inject();
         next_time_allowed_cast = current_time + 0.6;
-
-        console.print("Rouge, Casted Rain Of Arrows");
         return true;
     end;
             

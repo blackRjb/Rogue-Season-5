@@ -55,8 +55,6 @@ local function logics(target)
     if cast_spell.target(target, spell_data_barrage, false) then
         local current_time = get_time_since_inject();
         next_time_allowed_cast = current_time + cast_delay;
-
-        console.print("Rouge, Casted Barrage with " .. string.format("%.2f", cast_delay) .. "s delay");
         return true;
     end;
             

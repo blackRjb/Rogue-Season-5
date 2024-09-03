@@ -168,7 +168,6 @@ local function logics(entity_list, target_selector_data, best_target)
             
         global_poison_trap_last_cast_time = current_time
         global_poison_trap_last_cast_position = cast_position
-        console.print("Rogue, Casted Smoke grenade with " .. string.format("%.2f", cast_delay) .. "s delay")
         return true
     end
     return false

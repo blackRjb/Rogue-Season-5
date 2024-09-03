@@ -342,53 +342,51 @@ end
 -- floor parameter table: {is_enabled(bool), height(float)};
 -- angle parameter table: {is_enabled(bool), max_angle(float)};
 local function get_target_list(source, range, collision_table, floor_table, angle_table)
+
     local new_list = {}
     local possible_targets_list = target_selector.get_near_target_list(source, range);
     
-    local has_other_targets = false
-    
     for _, unit in ipairs(possible_targets_list) do
-        if unit:get_skin_name() == "S05_BSK_Rogue_001_Clone" then
-            if #possible_targets_list > 1 then
-                goto continue -- Ignore the target if there are other targets in range
-            else
-                table.insert(new_list, unit) -- Include the target if it's the only one in range
-            end
-        end
-        
+
+
+		if unit:get_skin_name() == "S05_BSK_Rogue_001_Clone" then
+			goto continue;
+		end
         if collision_table.is_enabled then
             local is_invalid = prediction.is_wall_collision(source, unit:get_position(), collision_table.width);
             if is_invalid then
                 goto continue;
             end
         end
-        
+		
+		
+		
+		
         local unit_position = unit:get_position()
-        
+
         if floor_table.is_enabled then
             local z_difference = math.abs(source.z() - unit_position:z())
             local is_other_floor = z_difference > floor_table.height
-            
+        
             if is_other_floor then
                 goto continue
             end
         end
-        
+
         if angle_table.is_enabled then
             local cursor_position = get_cursor_position();
             local angle = unit_position:get_angle(cursor_position, source);
             local is_outside_angle = angle > floor_table.max_angle
-            
+        
             if is_outside_angle then
                 goto continue
             end
         end
-        
+
         table.insert(new_list, unit);
-        has_other_targets = true
         ::continue::
     end
-    
+
     return new_list;
 end
 

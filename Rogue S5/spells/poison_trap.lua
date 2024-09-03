@@ -191,7 +191,6 @@ local function logics(entity_list, target_selector_data, best_target)
         next_time_allowed_cast = current_time + 3.0;
         global_poison_trap_last_cast_time = current_time
         global_poison_trap_last_cast_position = cast_position
-        console.print("Rouge Plugin, Casted Pois Trap");
         return true;
     end
 
