@@ -68,7 +68,7 @@ local function logics(target)
     if will_cast(target) then
         local current_time = get_time_since_inject()
         if cast_spell.self(spell_id_poison_imb, 0.0) then
-            next_time_allowed_cast = current_time + 0.1
+            next_time_allowed_cast = current_time + 0.0
             return true
         end
     end
