@@ -34,7 +34,8 @@ V1.3
 
 V1.4
 
-#Reworked a bit the hybrid mode when using Barrage, now if target is Elite/boss/champions even if your in range of barrage it will use Shadow step to jump on him to get closer and dps him (that should avoid hitting long range with barrage when few target or in boss type Hord so you dont stay long rang loosing dps 
+#Reworked a bit the hybrid mode when using Barrage, now if target is Elite/boss/champions even if your in range of barrage it will use Shadow step to jump on him to get closer and dps him (that should avoid hitting long range with barrage when few target or in boss type Hord so you dont stay long rang loosing dps
+>>>Waiting feedback on this to ensure it works as expected<<<
 
 
 Todo list : Idk give me idea ^^ 
