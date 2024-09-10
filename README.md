@@ -10,6 +10,10 @@ Smoke grenade and Shadow step got a diffrent scale slide bar to give more space 
 
 #Tweaked the target selector to add a new logic arround totem from umbracrux.
 
+#Added selector Target by adding a Close Target preference (It will still use preference for elite/champions etc but will prioritise Hardly closest one) that will probably need some adjustement in futur
+
+#Added Dance of knives In preparation of S6 (need to introduce few value onto spell) atm is not valide, just using for interface^^
+
 Todo list : Try to rework the shadowclone logic to dont spam it randomly against low tier enemy.
 waiting for more idea/work to do from feedback.
 
