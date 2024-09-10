@@ -18,6 +18,7 @@ end;
 
 local spells =
 {
+    dance_of_knives         = require("spells/dance_of_knives"),
     concealment             = require("spells/concealment"),
     caltrop                 = require("spells/caltrop"),
     puncture                = require("spells/puncture"),
@@ -50,14 +51,12 @@ local menu_elements_bone = require("menu")
 local menu = require("menu")
 
 
-
-
 on_render_menu(function()
-    if not menu_elements_bone.main_tree:push("Rogue: Season 5") then
+    if not menu_elements_bone.main_tree:push("Rogue: Season 6") then
         return
     end
 
-    menu_elements_bone.main_boolean:render("Enable Plugin", "")
+    menu_elements_bone.main_boolean:render("Enable Plugin", "Do we want to load it?")
 
     if menu_elements_bone.main_boolean:get() == false then
         menu_elements_bone.main_tree:pop()
@@ -66,31 +65,39 @@ on_render_menu(function()
 
     -- Updated Options for Mode
     local options = {"Melee", "Ranged", "Hybrid"} 
-    menu.mode:render("Mode", options, "") 
+    menu_elements_bone.mode:render("Combat Mode", options, "Choose your combat range preference") 
+
+    menu_elements_bone.target_selector_mode:render("Target Selector Mode", {"AIO", "Close Priority"}, "Choose btw Classic or Closest priority", "")
 
     menu_elements_bone.dash_cooldown:render("Dash Cooldown", "")
 
-
     local prev_andariels = menu_elements_bone.andariels_builds:get()
     local prev_rapide = menu_elements_bone.rapide_builds:get()
+    local prev_spin = menu_elements_bone.spin_builds:get()
     local prev_others = menu_elements_bone.others_builds:get()
 
-  
-    menu_elements_bone.andariels_builds:render("Andariels", "")
-    menu_elements_bone.rapide_builds:render("RapideFire", "")
-    menu_elements_bone.others_builds:render("Others", "")
-
+    menu_elements_bone.andariels_builds:render("Andariels", "Based onto classic Andys builds")
+    menu_elements_bone.rapide_builds:render("RapideFire", "Based onto classic Rapidefire builds")
+    menu_elements_bone.spin_builds:render("Spin2win", "S6 Coming soon")
+    menu_elements_bone.others_builds:render("Others", "Display all the spells from Rogue")
 
     local function handle_exclusive_checkbox()
-        if menu.andariels_builds:get() and not prev_andariels then
-            menu.rapide_builds:set(false)
-            menu.others_builds:set(false)
-        elseif menu.rapide_builds:get() and not prev_rapide then
-            menu.andariels_builds:set(false)
-            menu.others_builds:set(false)
-        elseif menu.others_builds:get() and not prev_others then
-            menu.andariels_builds:set(false)
-            menu.rapide_builds:set(false)
+        if menu_elements_bone.andariels_builds:get() and not prev_andariels then
+            menu_elements_bone.rapide_builds:set(false)
+            menu_elements_bone.others_builds:set(false)
+            menu_elements_bone.spin_builds:set(false)
+        elseif menu_elements_bone.rapide_builds:get() and not prev_rapide then
+            menu_elements_bone.andariels_builds:set(false)
+            menu_elements_bone.others_builds:set(false)
+            menu_elements_bone.spin_builds:set(false)
+        elseif menu_elements_bone.spin_builds:get() and not prev_spin then
+            menu_elements_bone.andariels_builds:set(false)
+            menu_elements_bone.rapide_builds:set(false)
+            menu_elements_bone.others_builds:set(false)
+        elseif menu_elements_bone.others_builds:get() and not prev_others then
+            menu_elements_bone.andariels_builds:set(false)
+            menu_elements_bone.rapide_builds:set(false)
+            menu_elements_bone.spin_builds:set(false)
         end
     end
 
@@ -108,7 +115,19 @@ on_render_menu(function()
         spells.death_trap.menu()
     end
 
-    if menu.rapide_builds:get() then
+    if menu_elements_bone.spin_builds:get() then
+        spells.dance_of_knives.menu()
+        spells.poison_trap.menu()
+        spells.dark_shroud.menu()
+        spells.dash.menu()
+        spells.shadow_step.menu()
+        spells.smoke_grenade.menu()
+        spells.caltrop.menu()
+
+    end
+
+
+    if menu_elements_bone.rapide_builds:get() then
         spells.rapid_fire.menu()
         spells.puncture.menu()
         spells.dash.menu()
@@ -116,8 +135,9 @@ on_render_menu(function()
         spells.smoke_grenade.menu()
         spells.cold_imbuement.menu()
     end
+
     
-    if menu.others_builds:get() then
+    if menu_elements_bone.others_builds:get() then
         spells.concealment.menu()
         spells.caltrop.menu()
         spells.puncture.menu()
@@ -142,6 +162,8 @@ on_render_menu(function()
         spells.death_trap.menu()
         spells.rain_of_arrows.menu()
     end
+
+
     menu_elements_bone.main_tree:pop()
 
 end)
@@ -203,7 +225,31 @@ local can_move = 0.0;
 local cast_end_time = 0.0;
 
 local my_utility = require("my_utility/my_utility");
-local my_target_selector = require("my_utility/my_target_selector");
+
+
+local my_target_selector = nil
+local current_target_selector_mode = nil
+
+local function update_target_selector()
+    local selected_mode = menu_elements_bone.target_selector_mode:get()
+    
+    if selected_mode ~= current_target_selector_mode then
+        if selected_mode == 0 then
+            my_target_selector = require("my_utility/my_target_selector")
+            console.print("Target selector updated to: AIO")
+        elseif selected_mode == 1 then
+            my_target_selector = require("my_utility/my_target_selector2")
+            console.print("Target selector updated to: Close Priority")
+        else
+            console.print("Unexpected mode: " .. tostring(selected_mode))
+        end
+        current_target_selector_mode = selected_mode
+    end
+end
+
+-- Initialisation du sélecteur de cible
+update_target_selector()
+
 
 local last_heartseeker_cast_time = 0
 local glow_target = nil
@@ -212,6 +258,7 @@ global_poison_trap_last_cast_time = 0.0
 global_poison_trap_last_cast_position = nil
 
 on_update(function ()
+    update_target_selector()
     local local_player = get_local_player();
     if not local_player then
         return;
@@ -282,7 +329,10 @@ on_update(function ()
         max_range = 26.0
     end
 
-    local best_target = my_target_selector.get_best_weighted_target(entity_list)
+    local best_target = my_target_selector.get_best_weighted_target(entity_list, player_position)
+    if not best_target then
+        return
+    end
     local best_target_dist_player_sqr = best_target:get_position():squared_dist_to_ignore_z(local_player:get_position())
 
     local spell_id_heartseeker = 363402
